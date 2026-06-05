@@ -7,9 +7,17 @@ import {
     ConflictError,
 } from '../exceptions/index.js';
 
+import dotenv from 'dotenv'
+dotenv.config();
+
 class UserProfileRepository {
     constructor() {
-        this._pool = new Pool();
+        this._pool = new Pool({
+        connectionString: process.env.DATABASE_URL,
+        ssl: {
+            rejectUnauthorized: false 
+        }
+        });
     }
 
     async createProfile(userId, payload) {

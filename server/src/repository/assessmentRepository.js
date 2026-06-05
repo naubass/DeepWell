@@ -12,7 +12,12 @@ dotenv.config();
 
 class AssessmentRepository {
     constructor() {
-        this._pool = new Pool();
+        this._pool = new Pool({
+        connectionString: process.env.DATABASE_URL,
+        ssl: {
+            rejectUnauthorized: false 
+        }
+        });
     }
 
     // processDailyCheckIn

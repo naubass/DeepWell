@@ -8,10 +8,17 @@ import {
     ConflictError,
     AuthenticationError,
 } from '../exceptions/index.js';
+import dotenv from 'dotenv'
+dotenv.config();
 
 class UserRepository {
     constructor() {
-        this._pool = new Pool();
+        this._pool = new Pool({
+        connectionString: process.env.DATABASE_URL,
+        ssl: {
+            rejectUnauthorized: false 
+        }
+        });
     }
 
     async createUser({ name, email, password, role }) {

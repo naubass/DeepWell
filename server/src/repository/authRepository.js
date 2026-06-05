@@ -1,10 +1,17 @@
 import pg from 'pg';
 const { Pool } = pg;
 import { nanoid } from 'nanoid';
+import dotenv from 'dotenv'
+dotenv.config();
 
 class AuthRepository {
     constructor() {
-        this._pool = new Pool();
+        this._pool = new Pool({
+        connectionString: process.env.DATABASE_URL,
+        ssl: {
+            rejectUnauthorized: false 
+        }
+        });
     }
 
     async generateRefreshToken(refreshToken) {
