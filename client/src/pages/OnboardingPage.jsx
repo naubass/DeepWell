@@ -29,7 +29,6 @@ function OnboardingPage() {
     const [userName, setUserName] = useState('');
 
     useEffect(() => {
-        // Ambil nama user untuk ditampilkan di sidebar onboarding
         const token = localStorage.getItem('accessToken');
         if (token) {
             try {
@@ -73,9 +72,23 @@ function OnboardingPage() {
             setOnboarded();
             navigate('/dashboard', { replace: true });
         } catch (err) {
-            console.error(err);
-            setError(err.response?.data?.message ?? 'Gagal menyimpan profil. Coba lagi.');
-            setLoading(false);
+            console.error("Error detail:", err.response?.data); 
+        try {
+            await profileService.getProfile();
+            setOnboarded(); 
+            navigate('/dashboard', { replace: true });
+        } catch (checkErr) {
+// Log error ke konsol supaya kita tahu pesan asli dari backend
+        console.error("Gagal saat memanggil createProfile:", err);
+
+        // Mengambil pesan error yang lebih detail
+        const errorMessage = err.response?.data?.message 
+                             || err.message 
+                             || 'Terjadi kesalahan tidak terduga.';
+        
+        setError(errorMessage);
+        setLoading(false);
+        }
         }
     };
 
@@ -158,7 +171,7 @@ function OnboardingPage() {
                                 bg-red-50 border border-red-200 rounded-2xl
                                 px-5 py-3 flex items-center gap-3 shadow-lg z-50
                                 max-w-sm w-full mx-4">
-                    <span className="text-red-500 text-sm flex-1">{error}</span>
+                    <span className="text-red-500 text-sm flex-1">{typeof error === 'string' ? error : (error.message || 'Terjadi kesalahan pada sistem')}</span>
                     <button
                         onClick={() => setError(null)}
                         className="text-red-400 hover:text-red-600 flex-shrink-0 text-lg leading-none"

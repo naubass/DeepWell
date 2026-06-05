@@ -13,6 +13,7 @@ const useAuthStore = create((set, get) => ({
     error:           null,
 
     // Actions
+    setOnboarded: () => set({ isOnboarded: true }),
     login: async ({ email, password }) => {
         set({ isLoading: true, error: null });
         try {
@@ -49,6 +50,23 @@ const useAuthStore = create((set, get) => ({
             throw error;
         }
     },
+
+    register: async ({ name, email, password }) => {
+        set({ isLoading: true, error: null });
+        try {
+            await authService.register({ name, email, password });
+            
+            set({ isLoading: false, error: null });
+        } catch (error) {
+            set({ 
+                error: error.response?.data?.message ?? 'Gagal mendaftar.', 
+                isLoading: false 
+            });
+            throw error;
+        }
+    },
+
+    clearError: () => set({ error: null }),
 
     initAuth: async () => {
         const token = localStorage.getItem('accessToken');

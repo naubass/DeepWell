@@ -48,7 +48,6 @@ export default function CheckInPage() {
         setIsLoading(true);
         setError(null);
         try {
-            console.log('Submitting:', data);
             const payloadToSubmit = {
                 ...data,
                 performance: data.performance / 10,
@@ -56,7 +55,6 @@ export default function CheckInPage() {
                 physical_activity: data.physical_activity / 60,
             };
 
-            console.log('Payload to submit:', payloadToSubmit);
             // TODO: call assessmentService.submitCheckIn({ ...data })
             await assessmentService.submitCheckIn(payloadToSubmit);
             await new Promise(r => setTimeout(r, 1500)); 

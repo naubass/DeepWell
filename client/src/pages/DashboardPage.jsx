@@ -120,7 +120,6 @@ export default function DashboardPage() {
     const hour = new Date().getHours();
     const greeting = hour < 12 ? 'Good morning' : hour < 18 ? 'Good afternoon' : 'Good evening';
 
-    console.log(user)
     // Ambil nama depan
     const firstName = user?.name?.split(' ')[0] ?? 'there';
     const score = result?.well_being_score ?? 0;

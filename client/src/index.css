@@ -7,3 +7,8 @@
     padding: 0.5rem 1.5rem;
     cursor: pointer;
 }
+
+img {
+    user-select: none !important;
+    -webkit-user-drag: none !important;
+}

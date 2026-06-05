@@ -121,8 +121,6 @@ const [activeBar, setActiveBar] = useState(null);
 
     const result = todayStatus?.data;
 
-    console.log(result);
-
 const DAY_LABELS = ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min'];
 
 const weeklyChartData = (() => {
@@ -158,8 +156,6 @@ const todayData = history.find((h) => {
     const t = new Date();
     return d.toDateString() === t.toDateString();
 });
-
-console.log(history);
 
 return (
     <div className="w-full max-w-6xl ms-auto px-4 pt-6 pb-24 lg:px-8 lg:pt-10">

@@ -2,7 +2,6 @@ import response from '../utils/response.js';
 import UserRepository from '../repository/userRepository.js';
 import AuthRepository from '../repository/authRepository.js';
 import TokenManager from '../security/tokenManager.js';
-import CacheService from '../cache/redisServices.js';
 import { InvariantError } from '../exceptions/index.js';
 
 export async function register(req, res, next) {
@@ -21,7 +20,6 @@ export async function login(req, res, next) {
     try {
         const { email, password } = req.body;
 
-        // Repository throw AuthenticationError jika kredensial salah
         const userId = await UserRepository.getUserByEmailAndPassword(email, password);
 
         const accessToken  = TokenManager.generateAccessToken({ id: userId });
@@ -73,22 +71,9 @@ export const logout = async (req, res, next) => {
 export async function getUserById(req, res, next) {
     try {
         const { id } = req.params;
-        const cacheKey = `user:${id}`;
-
-        try {
-            const dataCache = await CacheService.get(cacheKey);
-            if (dataCache) {
-                res.setHeader('X-Data-Source', 'cache');
-                return response(res, 200, 'User ditemukan.', JSON.parse(dataCache));
-            }
-        } catch (error) {
-            console.warn(`[Redis Warning] Failed to get cache for ${cacheKey}:`, error.message);
-        }
 
         const result = await UserRepository.getUserById(id);
 
-        await CacheService.set(cacheKey, JSON.stringify(result));
-        res.setHeader('X-Data-Source', 'database');
         return response(res, 200, 'User ditemukan.', result);
     } catch (error) {
         return next(error);
@@ -106,7 +91,6 @@ export async function updateUserById(req, res, next) {
 
         const result = await UserRepository.updateUserById(id, payload);
 
-        CacheService.delete(`user:${id}`); // fire-and-forget intentional
         return response(res, 200, 'User berhasil diperbarui.', result);
     } catch (error) {
         return next(error);

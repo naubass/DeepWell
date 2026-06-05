@@ -15,14 +15,6 @@ function LoginPage() {
 
     const [showPassword, setShowPassword] = useState(false);
 
-    useEffect(() => {
-    console.log("LoginPage mounted");
-
-    return () => {
-        console.log("LoginPage unmounted");
-    };
-}, []);
-
     const handleChange = (e) => {
         // clearError();
         setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -43,9 +35,6 @@ function LoginPage() {
     
     return (
         <div className="flex min-h-screen w-full bg-white font-sans text-gray-900">
-        {justRegistered && (
-            <p style={styles.successMsg}>Akun berhasil dibuat! Silakan masuk.</p>
-        )}
         {/* Kiri: Form Login */}
         <div className="flex w-full flex-col justify-center px-8 py-12 sm:px-16 md:px-24 lg:w-1/2 xl:px-32 relative">
             
@@ -55,6 +44,9 @@ function LoginPage() {
             </div>
 
             <div className="mx-auto w-full max-w-md">
+        {justRegistered && (
+            <p className="text-sm font-semibold text-teal-500">Akun berhasil dibuat! Silakan masuk.</p>
+        )}
             <h1 className="text-3xl font-bold mb-2">Sign In to DeepWell</h1>
             <p className="text-gray-500 mb-8">Welcome back! Please sign in to continue.</p>
 
@@ -75,7 +67,7 @@ function LoginPage() {
                     type="email"
                     name="email"
                     value={form.email} onChange={handleChange}
-                    placeholder="ahmadridokamaludin@example.com"
+                    placeholder="example@example.com"
                     className="w-full rounded-lg border border-gray-300 px-4 py-2.5 focus:border-teal-600 focus:outline-none focus:ring-1 focus:ring-teal-600"
                     required autoComplete="email"
                     />
@@ -106,12 +98,17 @@ function LoginPage() {
                 </div>
 
                 <div className="flex items-center justify-end">
-                <a href="#" className="text-sm font-medium text-teal-600 hover:underline">
+                {/* ongoing yas */}
+                {/* <a href="#" className="text-sm font-medium text-teal-600 hover:underline">
                     Forgot password?
-                </a>
+                </a> */}
                 </div>
 
-                {error && <p className="text-red-500">{error}</p>}
+                {error && (
+                <p className="text-red-500 text-sm mt-2">
+                    {typeof error === 'string' ? error : (error.message || 'Terjadi kesalahan pada sistem')}
+                </p>
+                )}
 
                 <button
                 disabled={isLoading}
@@ -124,14 +121,13 @@ function LoginPage() {
 
             <p className="mt-8 text-center text-sm text-gray-600">
                 Don't have an account?{' '}
-                <a href="#" className="font-semibold text-teal-600 hover:underline">
+                <Link to="/register" className="font-semibold text-teal-600 hover:underline">
                 Sign up
-                </a>
+                </Link>
             </p>
             </div>
         </div>
 
-        {/* Kanan: Gambar Pemanis */}
         <div className="hidden lg:block lg:w-1/2 h-screen object-cover">
             <img
             src="./bg-auth.jpg"

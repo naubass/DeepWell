@@ -43,7 +43,7 @@ export default function CheckInLayout({ children, error, onErrorClose }) {
                                 bg-red-50 border border-red-200 rounded-2xl
                                 px-5 py-3 flex items-center gap-3 shadow-lg z-50
                                 max-w-sm w-full mx-4">
-                    <span className="text-red-500 text-sm flex-1">{error}</span>
+                    <span className="text-red-500 text-sm flex-1">{typeof error === 'string' ? error : (error.message || 'Terjadi kesalahan pada sistem')}</span>
                     <button onClick={onErrorClose}
                         className="text-red-400 hover:text-red-600 flex-shrink-0 text-lg leading-none">×</button>
                 </div>
